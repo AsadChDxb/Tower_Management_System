@@ -13,7 +13,9 @@ cd web/tms-web; npm run dev
 powershell -File ./scripts/smoke-test.ps1
 ```
 
-Open: <http://localhost:5173> · Swagger <http://localhost:5080/swagger> · this repo in the editor.
+Open: <http://localhost:5173> (the SPA calls the deployed Azure API by default) · Swagger
+<https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net/swagger> · this repo in
+the editor.
 
 ## Walkthrough
 

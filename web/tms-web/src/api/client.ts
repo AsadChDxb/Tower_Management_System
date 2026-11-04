@@ -1,7 +1,18 @@
 import type { AuthResponse } from './types';
 import { tokenStore } from '../auth/tokenStore';
 
-const BASE_URL = '/api';
+/**
+ * Base URL of the Tower Management System API. The backend is hosted on Azure App Service
+ * (https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net), so the browser
+ * calls it directly. Override it with VITE_API_BASE_URL (absolute URL, no trailing slash) to talk to
+ * another deployment, or with an empty value to use same-origin requests (Vite dev proxy / wwwroot).
+ */
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ??
+  'https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net'
+).replace(/\/+$/, '');
+
+const BASE_URL = `${API_BASE_URL}/api`;
 
 /** RFC 7807 problem details surfaced by the API (plus validation `errors`). */
 export class ApiError extends Error {

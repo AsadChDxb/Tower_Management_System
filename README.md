@@ -41,7 +41,7 @@ Copy-Item src/Tms.Api/appsettings.Example.json src/Tms.Api/appsettings.json
 # 1) API - applies EF migrations, seeds roles/users and 24 demo sites on first run
 dotnet run --project src/Tms.Api            # http://localhost:5080/swagger
 
-# 2) SPA (second terminal) - Vite proxies /api to the API
+# 2) SPA (second terminal) - calls the deployed Azure API by default
 cd web/tms-web
 npm install
 npm run dev                                 # http://localhost:5173
@@ -59,6 +59,28 @@ Or start both automatically:
 powershell -File ./scripts/run-dev.ps1
 ```
 
+### Deployed backend (Azure App Service)
+
+The API is hosted on Azure App Service and that is what the SPA calls by default - no extra
+configuration needed:
+
+| What | URL |
+|---|---|
+| API base | <https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net> |
+| Swagger UI | `/swagger` on that host |
+| Health / DB probe | `/health` and `/health/ready` |
+
+```powershell
+cd web/tms-web
+npm run dev        # http://localhost:5173 - talks to the Azure API
+npm run build      # production bundle - same default backend
+```
+
+Change the backend with `VITE_API_BASE_URL` (absolute URL the SPA calls at runtime); the optional
+`web/tms-web/.env.example` documents both knobs. `VITE_API_TARGET` only redirects the Vite
+dev-server proxy for `/api` and `/health` (handy to keep `http://localhost:5173/health` working
+against your local API).
+
 ### Run against the Azure SQL database
 
 The connection string for the provisioned Azure database
@@ -73,11 +95,11 @@ dotnet run --project src/Tms.Api --launch-profile azure-db    # http://localhost
 `ASPNETCORE_ENVIRONMENT=Azure` layers `appsettings.Azure.json` over `appsettings.json`, so the API
 applies the EF migrations and seeds the demo data into that Azure database on first start.
 
-Point the SPA at that API (it proxies to 5080 by default):
+Point the SPA at that local API (by default it calls the deployed backend):
 
 ```powershell
 cd web/tms-web
-$env:VITE_API_TARGET='http://localhost:5081'; npm run dev
+$env:VITE_API_BASE_URL='http://localhost:5081'; npm run dev
 ```
 
 The Azure database is already migrated and seeded (24 sites, 30 towers, 56 tenancies, 8 operators,
@@ -153,7 +175,9 @@ LocalDB database per run, migrate + seed it, and drop it afterwards.
 
 ## API in one screen
 
-Full reference: [`docs/api.md`](docs/api.md). Swagger UI: <http://localhost:5080/swagger>
+Full reference: [`docs/api.md`](docs/api.md). Swagger UI:
+<https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net/swagger> (deployed) or
+<http://localhost:5080/swagger> (local API)
 (use `POST /api/auth/login` first, then the **Authorize** button with the access token).
 
 ```

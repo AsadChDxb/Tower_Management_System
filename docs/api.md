@@ -1,6 +1,9 @@
 # API reference
 
-Base URL (dev): `http://localhost:5080` · Swagger UI: `/swagger` · OpenAPI JSON: `/swagger/v1/swagger.json`
+Base URL (deployed, what the SPA uses by default):
+`https://weatherdemoapp-h0a4ggb7dzh4href.indiasouthcentral-01.azurewebsites.net`
+· Base URL (local dev): `http://localhost:5080`
+· Swagger UI: `/swagger` · OpenAPI JSON: `/swagger/v1/swagger.json`
 
 All business endpoints require a JWT: `Authorization: Bearer <accessToken>`.
 Errors are RFC 7807 `application/problem+json` with an extra `code` field (see
