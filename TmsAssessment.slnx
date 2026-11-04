@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Tms.Api/Tms.Api.csproj" />
+    <Project Path="src/Tms.Domain/Tms.Domain.csproj" />
+    <Project Path="src/Tms.Infrastructure/Tms.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Tms.Api.Tests/Tms.Api.Tests.csproj" />
+    <Project Path="tests/Tms.Domain.Tests/Tms.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

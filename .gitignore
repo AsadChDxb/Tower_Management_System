@@ -1,0 +1,42 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+*.nupkg
+*.snupkg
+
+# EF / local database files
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Node / Vite
+node_modules/
+dist/
+dist-ssr/
+.vite/
+npm-debug.log*
+yarn-error.log*
+
+# Tooling
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+
+# App configuration - these files hold connection strings / signing keys, never commit them.
+# appsettings.Example.json is the committed template; copy it to appsettings.json locally.
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
+*.secrets.json
+.env
+.env.local
+
+# Local publish profiles (Azure subscription ids / site names)
+**/PublishProfiles/

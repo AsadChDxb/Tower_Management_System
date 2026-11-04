@@ -1,0 +1,95 @@
+@Tms.Api_HostAddress = http://localhost:5080
+
+### Health probe
+GET {{Tms.Api_HostAddress}}/health
+
+### Swagger / OpenAPI document
+GET {{Tms.Api_HostAddress}}/swagger/v1/swagger.json
+
+### Sign in (admin) - copy the accessToken into @token below
+# @name login
+POST {{Tms.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@towerco.demo",
+  "password": "TowerCo!2026"
+}
+
+###
+@token = paste-access-token-here
+
+### Who am I (roles + permissions drive the UI menu)
+GET {{Tms.Api_HostAddress}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### Filter sites: country + status + sorting + paging (use case 3)
+GET {{Tms.Api_HostAddress}}/api/sites?country=DE&status=Active&sort=utilization&page=1&pageSize=5
+Authorization: Bearer {{token}}
+
+### Sites with free tenant slots only
+GET {{Tms.Api_HostAddress}}/api/sites?hasCapacity=true&pageSize=100
+Authorization: Bearer {{token}}
+
+### Dashboard summary (use case 4)
+GET {{Tms.Api_HostAddress}}/api/dashboard/summary
+Authorization: Bearer {{token}}
+
+### Lookups for forms/filters
+GET {{Tms.Api_HostAddress}}/api/lookups
+Authorization: Bearer {{token}}
+
+### Register a site with its first tower (use case 1 - Operations/Admin)
+POST {{Tms.Api_HostAddress}}/api/sites
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "siteCode": "DE-BER-0999",
+  "name": "Berlin Demo Site",
+  "countryCode": "DE",
+  "city": "Berlin",
+  "address": "Demo Street 1",
+  "latitude": 52.52,
+  "longitude": 13.405,
+  "siteType": "Greenfield",
+  "status": "Active",
+  "acquiredOn": "2025-01-15",
+  "monthlySiteCost": 480,
+  "notes": "Created from the .http file",
+  "tower": {
+    "towerCode": "DE-BER-0999-T1",
+    "structureType": "Lattice",
+    "heightMeters": 42,
+    "tenantCapacity": 3,
+    "antennaMountCapacity": 10
+  }
+}
+
+### Assign a tenant (use case 2 - Commercial/Admin). A full tower returns 409 tower_capacity_exceeded.
+POST {{Tms.Api_HostAddress}}/api/tenancies
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "towerId": "paste-tower-id-here",
+  "operatorId": "paste-operator-id-here",
+  "spaceType": "Antenna",
+  "antennaCount": 2,
+  "monthlyRent": 1750,
+  "currency": "EUR",
+  "startDate": "2026-01-01"
+}
+
+### Tower capacity verdict
+GET {{Tms.Api_HostAddress}}/api/towers/paste-tower-id-here/capacity
+Authorization: Bearer {{token}}
+
+### Users (Admin only)
+GET {{Tms.Api_HostAddress}}/api/users
+Authorization: Bearer {{token}}
+
+### Reset the demo portfolio (Development environment only)
+POST {{Tms.Api_HostAddress}}/api/dev/reset-demo
+Authorization: Bearer {{token}}
+
